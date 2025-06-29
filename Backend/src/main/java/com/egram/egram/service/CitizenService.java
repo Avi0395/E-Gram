@@ -32,7 +32,6 @@ public class CitizenService {
         }
 
         return responseList;
-
     }
 
     // register citizen

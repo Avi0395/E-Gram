@@ -2,6 +2,7 @@ package com.egram.egram.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,22 +28,42 @@ public class CitizenController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CitizenResponseDto>> getAllCitizens() {
-        List<CitizenResponseDto> list = citizenService.getAllCitizens();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<?> getAllCitizens() {
+        try {
+            List<CitizenResponseDto> list = citizenService.getAllCitizens();
+            return ResponseEntity.ok(list);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to fetch citizen list. Please try again later.");
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<CitizenResponseDto> registerCitizen(@Valid @RequestBody CitizenRequestDto citizenRequestDto) {
-        CitizenResponseDto citizenResponseDto = citizenService.registerCitizen(citizenRequestDto);
-        return ResponseEntity.ok(citizenResponseDto);
+    @PostMapping("/register")
+    public ResponseEntity<?> registerCitizen(
+            @Valid @RequestBody CitizenRequestDto requestDto) {
+        try {
+            CitizenResponseDto responseDto = citizenService.registerCitizen(requestDto);
+            return ResponseEntity.ok(responseDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred during registration.");
+        }
     }
 
-    @PostMapping("login")
-    public ResponseEntity<CitizenResponseDto> loginCitizen(
-            @Valid @RequestBody CitizenLoginRequestDto citizenRequestDto) {
-        CitizenResponseDto citizenResponseDto = citizenService.loginCitizen(citizenRequestDto);
-        return ResponseEntity.ok(citizenResponseDto);
+    @PostMapping("/login")
+    public ResponseEntity<?> loginCitizen(
+            @Valid @RequestBody CitizenLoginRequestDto loginDto) {
+        try {
+            CitizenResponseDto responseDto = citizenService.loginCitizen(loginDto);
+            return ResponseEntity.ok(responseDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Login failed due to server error.");
+        }
     }
 
 }
