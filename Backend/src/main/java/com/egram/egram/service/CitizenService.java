@@ -1,23 +1,29 @@
 package com.egram.egram.service;
 
+import com.egram.egram.dto.authDto.AuthResponseDto;
 import com.egram.egram.dto.citizenDto.CitizenLoginRequestDto;
 import com.egram.egram.dto.citizenDto.CitizenRequestDto;
 import com.egram.egram.dto.citizenDto.CitizenResponseDto;
 import com.egram.egram.model.Citizen;
 import com.egram.egram.repository.CitizenRepository;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CitizenService {
 
     private final CitizenRepository citizenRepository;
+    private final JwtService jwtService;
 
-    public CitizenService(CitizenRepository citizenRepository) {
+    public CitizenService(CitizenRepository citizenRepository, JwtService jwtService) {
         this.citizenRepository = citizenRepository;
+        this.jwtService = jwtService;
     }
 
     // get citizens
@@ -58,7 +64,7 @@ public class CitizenService {
     }
 
     // login user
-    public CitizenResponseDto loginCitizen(CitizenLoginRequestDto loginRequestDto) {
+    public AuthResponseDto loginCitizen(CitizenLoginRequestDto loginRequestDto) {
         Citizen login = citizenRepository.findByAadhaarNumber(loginRequestDto.getAadhaarNumber())
                 .orElseThrow(() -> new IllegalArgumentException("Citizen not found with Aadhar"));
 
@@ -66,8 +72,13 @@ public class CitizenService {
             throw new IllegalArgumentException("Date of birth does not match");
         }
 
-        return convertToResponseDto(login);
+        var userDetails = new User(
+                login.getAadhaarNumber(),
+                "", // password unused
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_CITIZEN")));
 
+        String token = jwtService.generateToken(userDetails);
+        return new AuthResponseDto(token);
     }
 
     // convert to response object

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.egram.egram.dto.authDto.AuthResponseDto;
 import com.egram.egram.dto.citizenDto.CitizenLoginRequestDto;
 import com.egram.egram.dto.citizenDto.CitizenRequestDto;
 import com.egram.egram.dto.citizenDto.CitizenResponseDto;
@@ -53,17 +54,22 @@ public class CitizenController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginCitizen(
-            @Valid @RequestBody CitizenLoginRequestDto loginDto) {
+    public ResponseEntity<?> loginCitizen(@Valid @RequestBody CitizenLoginRequestDto loginDto) {
         try {
-            CitizenResponseDto responseDto = citizenService.loginCitizen(loginDto);
-            return ResponseEntity.ok(responseDto);
+            AuthResponseDto token = citizenService.loginCitizen(loginDto);
+            return ResponseEntity.ok(token);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Login failed due to server error.");
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logoutCitizen() {
+        // Stateless logout – just clear from frontend (localStorage)
+        return ResponseEntity.ok("Logout successful");
     }
 
 }
