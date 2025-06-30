@@ -25,8 +25,9 @@ function AdminLoginPage() {
             );
             setMessage('Login successful!');
             console.log('Admin logged in:', response.data);
-            navigate('/citizen-login');
             // TODO: store token or navigate if needed
+
+            navigate('/admin-dashboard');
         } catch (err) {
             setError('Invalid username or password');
         }

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function CitizenLoginPage() {
   const [form, setForm] = useState({ aadhaarNumber: '', dob: '' });
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,9 +18,9 @@ function CitizenLoginPage() {
     e.preventDefault();
     setError('');
     setMessage('');
+    setLoading(true);
 
     try {
-      // Trim input values before sending
       const sanitizedForm = {
         aadhaarNumber: form.aadhaarNumber.trim(),
         dob: form.dob.trim()
@@ -33,11 +37,8 @@ function CitizenLoginPage() {
       );
 
       setMessage('Login successful!');
-      console.log('Citizen logged in:', response.data);
-
-      // Optional: Navigate or save response
-      // localStorage.setItem('citizen', JSON.stringify(response.data));
-      // navigate('/citizen-dashboard');
+      localStorage.setItem('citizen', JSON.stringify(response.data));
+      navigate('/citizen-dashboard');
 
     } catch (err) {
       console.error('Login Error:', err);
@@ -48,6 +49,8 @@ function CitizenLoginPage() {
         'Login failed. Please check Aadhaar and DOB.';
 
       setError(backendMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,9 +91,10 @@ function CitizenLoginPage() {
 
         <button
           type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          className={`w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition ${loading && 'opacity-60 cursor-not-allowed'}`}
+          disabled={loading}
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
     </div>
