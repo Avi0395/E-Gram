@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import CitizenLoginPage from './pages/CitizenLoginPage';
 import CitizenDashboard from './pages/CitizenDashboard';
+import AdminDashBoard from './pages/AdminDashBoard';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/admin-login" element={<AdminLoginPage />} />
         <Route path="/citizen-login" element={<CitizenLoginPage />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
+        <Route path='/admin-dashboard' element={<AdminDashBoard />} />
       </Routes>
     </BrowserRouter>
   );

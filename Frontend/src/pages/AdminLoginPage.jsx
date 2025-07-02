@@ -20,13 +20,12 @@ function AdminLoginPage() {
 
         try {
             const response = await axios.post(
-                `${import.meta.env.VITE_API_BASE_URL}/admin`,
+                `${import.meta.env.VITE_API_BASE_URL}/admin/login`,
                 form
             );
             setMessage('Login successful!');
             console.log('Admin logged in:', response.data);
-            // TODO: store token or navigate if needed
-
+            localStorage.setItem('admin', JSON.stringify(response.data));
             navigate('/admin-dashboard');
         } catch (err) {
             setError('Invalid username or password');
