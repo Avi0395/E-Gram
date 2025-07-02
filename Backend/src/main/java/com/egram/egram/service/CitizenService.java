@@ -63,7 +63,7 @@ public class CitizenService {
 
     }
 
-    // login user
+    // login citizen
     public AuthResponseDto loginCitizen(CitizenLoginRequestDto loginRequestDto) {
         Citizen login = citizenRepository.findByAadhaarNumber(loginRequestDto.getAadhaarNumber())
                 .orElseThrow(() -> new IllegalArgumentException("Citizen not found with Aadhar"));

@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/citizens/login", "/admin", "/citizens/register").permitAll()
+                .requestMatchers("/citizens/login", "/admin/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

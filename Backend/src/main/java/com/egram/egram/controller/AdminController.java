@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.egram.egram.dto.adminDto.AdminLoginRequestDto;
+import com.egram.egram.dto.authDto.AuthResponseDto;
 import com.egram.egram.service.AdminService;
 
 import jakarta.validation.Valid;
@@ -22,12 +23,23 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping
-    public ResponseEntity<String> loginAdmin(@Valid @RequestBody AdminLoginRequestDto adminLoginRequestDto) {
-        if (adminService.loginAdmin(adminLoginRequestDto)) {
-            return ResponseEntity.ok("Login Successful");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+    @PostMapping("/login")
+    public ResponseEntity<?> loginCitizen(@Valid @RequestBody AdminLoginRequestDto loginDto) {
+        try {
+            AuthResponseDto token = adminService.loginAdmin(loginDto);
+            return ResponseEntity.ok(token);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Login failed due to server error.");
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logoutAdmin() {
+        // Stateless logout – just clear from frontend (localStorage)
+        return ResponseEntity.ok("Logout successful");
+    }
+
 }
