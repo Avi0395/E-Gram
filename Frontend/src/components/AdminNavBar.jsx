@@ -19,17 +19,20 @@ function AdminNavbar() {
     };
 
     return (
-        <nav className="bg-green-600 text-white px-6 py-4 shadow-md flex justify-between items-center">
+        <nav className="bg-blue-600 text-white px-6 py-4 shadow-md flex justify-between items-center">
+            <div>
+                <h1 className="text-xl font-bold">E-Gram</h1>
+            </div>
             <ul className="flex space-x-6 items-center">
-                <li><Link to="/citizen/dashboard" className="hover:underline">Home</Link></li>
+                <li><Link to="/admin-dashboard" className="hover:underline">Home</Link></li>
                 <li><Link to="/citizen/certificates" className="hover:underline">Certificates</Link></li>
                 <li><Link to="/citizen/tax" className="hover:underline">Tax Info</Link></li>
-                <li><Link to="/citizen/members" className="hover:underline">Members</Link></li>
+                <li><Link to="/admin-members" className="hover:underline">Members</Link></li>
                 <li><Link to="/citizen/schemes" className="hover:underline">Schemes</Link></li>
                 <li>
                     <button
                         onClick={handleLogout}
-                        className="bg-white text-green-600 px-3 py-1 rounded hover:bg-green-100 transition"
+                        className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-green-100 transition"
                     >
                         Logout
                     </button>

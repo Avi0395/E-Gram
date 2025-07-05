@@ -71,6 +71,16 @@ function AdminLoginPage() {
                 >
                     Login
                 </button>
+
+                <div className="text-center mt-4">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/citizen-login')}
+                        className="text-sm text-blue-600 hover:underline"
+                    >
+                        Login as Citizen
+                    </button>
+                </div>
             </form>
         </div>
     );

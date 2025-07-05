@@ -4,6 +4,8 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import CitizenLoginPage from './pages/CitizenLoginPage';
 import CitizenDashboard from './pages/CitizenDashboard';
 import AdminDashBoard from './pages/AdminDashBoard';
+import CitizenMember from './pages/CitizenMember';
+import AdminMember from './pages/AdminMember';
 
 function App() {
   return (
@@ -14,6 +16,9 @@ function App() {
         <Route path="/citizen-login" element={<CitizenLoginPage />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
         <Route path='/admin-dashboard' element={<AdminDashBoard />} />
+        <Route path='/citizen-members' element={<CitizenMember />} />
+        <Route path='/admin-members' element={<AdminMember />} />
+
       </Routes>
     </BrowserRouter>
   );

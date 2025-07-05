@@ -27,10 +27,10 @@ function CitizenNavbar() {
                 )}
             </div>
             <ul className="flex space-x-6 items-center">
-                <li><Link to="/citizen/dashboard" className="hover:underline">Home</Link></li>
+                <li><Link to="/citizen-dashboard" className="hover:underline">Home</Link></li>
                 <li><Link to="/citizen/certificates" className="hover:underline">Certificates</Link></li>
                 <li><Link to="/citizen/tax" className="hover:underline">Tax Info</Link></li>
-                <li><Link to="/citizen/members" className="hover:underline">Members</Link></li>
+                <li><Link to="/citizen-members" className="hover:underline">Members</Link></li>
                 <li><Link to="/citizen/schemes" className="hover:underline">Schemes</Link></li>
                 <li>
                     <button
