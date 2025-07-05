@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDto {
-    String fullName;
-    Designation designation;
+    private Long id;
+    private String fullName;
+    private Designation designation;
 
 }

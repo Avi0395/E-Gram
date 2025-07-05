@@ -1,7 +1,9 @@
+// Updated UserDetailsServiceImpl.java
 package com.egram.egram.service;
 
 import com.egram.egram.model.Citizen;
 import com.egram.egram.repository.CitizenRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,14 +21,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final CitizenRepository citizenRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String aadhaarNumber) throws UsernameNotFoundException {
-        Citizen citizen = citizenRepository.findByAadhaarNumber(aadhaarNumber)
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if ("admin".equals(username)) {
+            return new User(
+                    "admin",
+                    "",
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
+            );
+        }
+
+        Citizen citizen = citizenRepository.findByAadhaarNumber(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Citizen not found"));
 
         return new User(
                 citizen.getAadhaarNumber(),
-                "", // No password since login is based on DOB, unless encrypted login used
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_CITIZEN"))
+                "",
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_CITIZEN"))
         );
     }
 }

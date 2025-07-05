@@ -24,7 +24,7 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginCitizen(@Valid @RequestBody AdminLoginRequestDto loginDto) {
+    public ResponseEntity<?> loginAdmin(@Valid @RequestBody AdminLoginRequestDto loginDto) {
         try {
             AuthResponseDto token = adminService.loginAdmin(loginDto);
             return ResponseEntity.ok(token);

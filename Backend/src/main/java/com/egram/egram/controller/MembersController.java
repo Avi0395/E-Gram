@@ -2,6 +2,7 @@ package com.egram.egram.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,17 @@ public class MembersController {
 
     public MembersController(MembersService membersService) {
         this.membersService = membersService;
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllMembers() {
+        try {
+            return ResponseEntity.ok(membersService.getAllMembers());
+        } catch (IllegalArgumentException ie) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ie.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+        }
     }
 
     @PutMapping("/{id}")
